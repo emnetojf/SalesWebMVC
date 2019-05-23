@@ -40,7 +40,6 @@ namespace SalesWebMVC.Migrations
                     DataVendas = table.Column<DateTime>(nullable: false),
                     ValorVenda = table.Column<double>(nullable: false),
                     StatusVenda = table.Column<int>(nullable: false),
-                    MyProperty = table.Column<int>(nullable: false),
                     vendedorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

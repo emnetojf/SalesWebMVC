@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesWebMVC.Models;
 
 namespace SalesWebMVC.Migrations
@@ -35,8 +34,6 @@ namespace SalesWebMVC.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("DataVendas");
-
-                    b.Property<int>("MyProperty");
 
                     b.Property<int>("StatusVenda");
 
