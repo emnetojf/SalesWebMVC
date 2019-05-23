@@ -48,7 +48,7 @@ namespace SalesWebMVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                seedingService.Seed();
+                seedingService.Seed();// Popula o BD
             }
             else
             {
