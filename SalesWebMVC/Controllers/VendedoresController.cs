@@ -1,7 +1,5 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SalesWebMVC.Models;
 using SalesWebMVC.Models.ViewModels;
@@ -44,20 +42,20 @@ namespace SalesWebMVC.Controllers
         {
             _vendedoresService.Insert(vendedor);
             return RedirectToAction(nameof(Index));
-        }
+        } 
 
         public IActionResult Delete(int? id) // ? indica que é opcional
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id not provided" });
             }
 
             var vendedor = _vendedoresService.FindById(id.Value);
 
             if (vendedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id inexistente" });
             }
 
             return View(vendedor);
@@ -77,14 +75,14 @@ namespace SalesWebMVC.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id not provided" });
             }
 
             var vendedor = _vendedoresService.FindById(id.Value);
 
             if (vendedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id inexistente" });
             }
 
             return View(vendedor);
@@ -96,14 +94,14 @@ namespace SalesWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id provided" });
             }
 
             var vendedor = _vendedoresService.FindById(id.Value);
 
             if (vendedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id inexistente" });
             }
 
             List<Departamento> departs = _departamentoService.FindAll();
@@ -121,7 +119,7 @@ namespace SalesWebMVC.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { Mensagem = "Id diferentes" });
             }
 
             try
@@ -131,14 +129,25 @@ namespace SalesWebMVC.Controllers
             }
             catch (NotFoundException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Mensagem = e.Message });
             }
             catch (DbConcurrencyException e)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { Mensagem = e.Message });
             }
         }
 
+       
+        public IActionResult Error(string Mensagem)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Mensagem = Mensagem,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
+        }
 
     }
 }
