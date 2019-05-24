@@ -146,10 +146,17 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _vendedoresService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _vendedoresService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+                //return RedirectToAction(nameof(Error), new { Mensagem = e.Message });   ou
+                return RedirectToAction(nameof(Error), new { Mensagem = "Erro ao excluir! Vendedor possui vendas registradas." });
+            }
         }
-
         /* Sync
          
         public IActionResult Details(int? id)

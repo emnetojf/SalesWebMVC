@@ -72,9 +72,16 @@ namespace SalesWebMVC.Services
         // Async
         public async Task RemoveAsync(int id)
         {
-            var vendedor = await _context.Vendedor.FindAsync(id);
-            _context.Remove(vendedor);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var vendedor = await _context.Vendedor.FindAsync(id);
+                _context.Remove(vendedor);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new IntegrityException(e.Message); 
+            }
         }
 
         /* Sync
