@@ -1,7 +1,10 @@
-﻿
+﻿@model IEnumerable<IGrouping<Departamento, Vendas>>
+
 @{
-    ViewData["Title"] = "BuscaGrupo";
+    ViewData["Title"] = "Grouping Search";
+    DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
+    DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
 }
 
-<h2>Busca Grupo</h2>
+<h2>@ViewData["Title"]</h2>
 

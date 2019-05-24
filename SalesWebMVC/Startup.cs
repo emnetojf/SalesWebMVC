@@ -43,7 +43,7 @@ namespace SalesWebMVC
             services.AddScoped<SeedingService>();
             services.AddScoped<VendedoresService>();
             services.AddScoped<DepartamentoService>();
-
+            services.AddScoped<VendasService>();
         }
         
 
