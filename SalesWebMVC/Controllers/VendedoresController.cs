@@ -26,6 +26,7 @@ namespace SalesWebMVC.Controllers
             var list = _vendedoresService.FindAll();
 
             return View(list);
+            
         }
 
         public IActionResult Create()
@@ -40,6 +41,13 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Vendedor vendedor)
         {
+            if ( !ModelState.IsValid ) // Se o modelo não foi validado
+            {
+                var departs = _departamentoService.FindAll();
+                VendedorFormViewModel vwModel = new VendedorFormViewModel { Departamentos = departs, Vendedor = vendedor };
+                return View(vwModel); // retorna o create repassando meu obj para terminar de consertar
+            }
+
             _vendedoresService.Insert(vendedor);
             return RedirectToAction(nameof(Index));
         } 
@@ -117,8 +125,15 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Vendedor vendedor)
         {
-            if (id != vendedor.Id)
+            if (!ModelState.IsValid) // Se o modelo não foi validado
             {
+                var departs = _departamentoService.FindAll();
+                VendedorFormViewModel vwModel = new VendedorFormViewModel { Departamentos = departs, Vendedor = vendedor };
+                return View(vwModel); // retorna o create repassando minha view model para terminar de consertar
+            }
+
+            if (id != vendedor.Id)
+            {   
                 return RedirectToAction(nameof(Error), new { Mensagem = "Id diferentes" });
             }
 
